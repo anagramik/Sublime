@@ -1,0 +1,83 @@
+<snippet>
+    <content><![CDATA[
+<?php
+$pagenum = '1';
+if ($_GET['pagenum']) {
+  $pagenum = $_GET['pagenum'];
+}
+$args = array(
+  'pagination' => true,
+  's' => $_GET['s'],
+  'posts_per_page' => 3,
+  'paged' => $pagenum
+);
+
+$query = new WP_Query( $args );
+
+// The Loop
+if ( $query->have_posts() ) {
+  while ( $query->have_posts() ) {
+    $query->the_post();
+    ?>
+
+    <div class="search-item">
+      <h4>
+        <a href="<?php the_permalink(); ?>">
+          <?php the_title(); ?>
+        </a>
+      </h4>
+      <?php the_excerpt(); ?>
+    </div>
+
+    <?php
+  }
+} else {
+  ?>
+
+  <h2>no posts</h2>
+
+  <?php
+}
+?>
+
+<?php
+  // if ( $query->have_posts() ) {
+    if ( $query->max_num_pages > 1 ) { ?>
+           <div class="pagination">
+              <?php
+                //current
+                if ($pagenum != 1) {
+                  $output = '<a href="/?s=' . $_GET['s'] . '&pagenum=' . ($pagenum - 1)  . '" class="navigation prev">
+                  <i class="fa fa-angle-left"></i>
+                  Prev
+                </a>';
+          echo $output;
+                }
+              ?>
+               <?php for ( $i = 1; $i <= $query->max_num_pages; $i ++ ) {
+//                        $link = $i == 1 ? remove_query_arg( 'paged' ) : add_query_arg( 'paged', $i );
+                   $link = '/?s=' . $_GET['s'] . '&pagenum=' . $i;
+
+                   echo '<a href="' . $link . '"' . ( $i == $pagenum ? ' class="active"' : '' ) . '>' . $i . '</a> ';
+               } ?>
+               <?php
+                //current
+              if ($pagenum != $query->max_num_pages) {
+                  $output = '<a href="/?s=' . $_GET['s'] . '&pagenum=' . ($pagenum + 1)  . '" class="navigation next">
+                  Next
+                  <i class="fa fa-angle-right"></i>
+                </a>';
+          echo $output;
+                }
+              ?>
+           </div>
+       <?php }
+       // }
+     ?>
+
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>custompagination</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

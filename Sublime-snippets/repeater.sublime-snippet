@@ -1,0 +1,32 @@
+<snippet>
+  <content><![CDATA[
+<?php
+
+  // check if the repeater field has rows of data
+  if( have_rows('${1:repeater_name}') ):
+
+    // loop through the rows of data
+    while ( have_rows('${1:repeater_name}') ) : the_row();
+
+      // display a sub field value
+      \$${2:value} = get_sub_field('${2:value}');
+?>
+
+
+
+<?php
+
+    //endwhile
+    endwhile;
+
+  // endif
+  endif;
+
+?>
+
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>repeater</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <!-- <scope>source.python</scope> -->
+</snippet>
